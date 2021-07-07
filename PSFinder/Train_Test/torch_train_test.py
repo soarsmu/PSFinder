@@ -166,21 +166,21 @@ def moveFile(fileDir,tarDir):
                 shutil.move(fileDir+name, tarDir+name)
 
 
-def mv_frames_to_dir(valid_path = "/home/PSC2CODE/chengran/data_copy/valid_frame_update_data",invalid_path = "/home/PSC2CODE/chengran/data_copy/invalid_frame_data",validdir = "/home/PSC2CODE/chengran/frame_data/valid_pytorch",invaliddir = "/home/PSC2CODE/chengran/frame_data/invalid_pytorch"):
+def mv_frames_to_dir(valid_path = "data_copy/valid_frame_update_data",invalid_path = "data_copy/invalid_frame_data",validdir = "frame_data/valid_pytorch",invaliddir = "frame_data/invalid_pytorch"):
     count = 0
     for video in os.listdir(valid_path):
         for img in os.listdir(os.path.join(valid_path,video)):
             # print(img)
             # print(os.path.join(valid_path,video,img))
-            if not os.path.exists("/home/PSC2CODE/chengran/frame_data/pytorch_data/"+img):
-                copyfile(os.path.join(valid_path,video,img),"/home/PSC2CODE/chengran/frame_data/pytorch_data/"+"valid"+img)
+            if not os.path.exists("frame_data/pytorch_data/"+img):
+                copyfile(os.path.join(valid_path,video,img),"frame_data/pytorch_data/"+"valid"+img)
             count+=1
     print("the number of valid frames are "+str(count))
     count = 0
     for video in os.listdir(invalid_path):
         for img in os.listdir(os.path.join(invalid_path,video)):
-            if not os.path.exists("/home/PSC2CODE/chengran/frame_data/pytorch_data/"+img):
-                copyfile(os.path.join(invalid_path,video,img),"/home/PSC2CODE/chengran/frame_data/pytorch_data/"+"other"+img)
+            if not os.path.exists("frame_data/pytorch_data/"+img):
+                copyfile(os.path.join(invalid_path,video,img),"frame_data/pytorch_data/"+"other"+img)
             count+=1
     print("the number of invalid frames are "+str(count))
 
@@ -242,9 +242,9 @@ if __name__ == "__main__":
     GPU_usage_and_test()
     # mv_frames_to_dir()
     # make test set
-    # moveFile("/home/PSC2CODE/chengran/frame_data/pytorch_data/","/home/PSC2CODE/chengran/frame_data/test/")
-    train_data = myDataSet("/home/PSC2CODE/chengran/frame_data/pytorch_data",data_transform)
-    test_data = myDataSet("/home/PSC2CODE/chengran/frame_data/test",data_transform)
+    # moveFile("frame_data/pytorch_data/","frame_data/test/")
+    train_data = myDataSet("frame_data/pytorch_data",data_transform)
+    test_data = myDataSet("frame_data/test",data_transform)
     trainloader = torch.utils.data.DataLoader(train_data, batch_size=32, shuffle=True, num_workers=0)
     testloader = torch.utils.data.DataLoader(test_data, batch_size=32, shuffle=True, num_workers=0)
 

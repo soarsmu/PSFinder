@@ -6,7 +6,7 @@ import os
 import io
 # 读取labels里所有的视频文件
 def read_video_records():
-    videopath = "/home/PSC2CODE/webapp/lables/"
+    videopath = "webapp/lables/"
     listdir = os.listdir(videopath)
     return listdir
 
@@ -36,14 +36,14 @@ def readvideos(videopath,count):
 
 def download_video():
     hash, name = readvideos()
-    download_path = "/home/PSC2CODE/chengran/video/psc2code_video"
+    download_path = "video/psc2code_video"
     download_url = "http://youtube.com/watch?v="+str(hash)
     print(download_url)
     yt = YouTube(download_url)
     print(yt.streams)
 
 def testdownload(hash):
-    download_path = "/home/PSC2CODE/chengran/video/psc2code_video"
+    download_path = ""
     download_url = "http://youtube.com/watch?v="+str(hash)
     print(download_url)
     yt = YouTube(download_url)
@@ -55,12 +55,11 @@ def testdownload(hash):
 
 
 def truetestdownload():
-    download_path = "/home/PSC2CODE/chengran"
     download_url = "http://youtube.com/watch?v=SsyblLU4fZg"
     print(download_url)
     yt = YouTube(download_url)
     # yt.streams.get_audio_only().download(download_path)    
-    yt.streams.first().download(download_path)    
+    yt.streams.first().download()    
     yt.streams.get_by_itag(22).download()
 
 
@@ -68,7 +67,7 @@ if __name__ == '__main__':
     listdir = read_video_records()
     count = 0
     for video in listdir:
-        videopath = "/home/PSC2CODE/webapp/lables/"+video
+        videopath = "webapp/lables/"+video
         video_hash = readvideos(videopath,count)
         print(video_hash)   
         try:

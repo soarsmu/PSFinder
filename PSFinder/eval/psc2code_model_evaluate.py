@@ -7,9 +7,9 @@ import os
 from keras.preprocessing.image import load_img
 
 
-sourcepath = "/home/PSC2CODE/chengran/experiment2_data/test"
+sourcepath = "experiment2_data/test"
 
-# sourcepath = "/home/PSC2CODE/chengran/data_copy/valid_frame_update_data/Java operators"
+# sourcepath = "data_copy/valid_frame_update_data/Java operators"
 
 model = keras.models.load_model('weights-new.h5')
 imgs = []

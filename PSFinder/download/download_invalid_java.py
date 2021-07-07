@@ -1,11 +1,11 @@
 # this file is to download videos that don't contain code but the topic is related to java and programming.
 from pytube import YouTube
 
-# store place : /home/PSC2CODE/chengran/video_data/codeless_video
+# store place : video_data/codeless_video
 
 def download(download_hash):
     download_url = "http://youtube.com/watch?v="+download_hash
-    download_path = "/home/PSC2CODE/chengran/video_data/codeless_video/"+download_hash
+    download_path = yourpath+download_hash
     # download_url = "http://youtube.com/watch?v="+str(hash)
     print(download_url)
     yt = YouTube(download_url)
@@ -15,7 +15,7 @@ def download(download_hash):
 
 def download_IDE(download_hash,ide):
     download_url = "http://youtube.com/watch?v="+download_hash
-    download_path = "/home/PSC2CODE/chengran/video_data/valid_video_otherIDE/"+ide+"/"+download_hash
+    download_path = yourpath+ide+"/"+download_hash
     # download_url = "http://youtube.com/watch?v="+str(hash)
     print(download_url)
     yt = YouTube(download_url)

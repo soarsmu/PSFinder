@@ -16,11 +16,11 @@ import subprocess
 
 def callsubprocess(video_path,video):
     videoname = os.listdir(video_path)
-    videopath = "/home/PSC2CODE/chengran/video_data/codeless_video/"+video+"/"+videoname[0]
+    videopath = "video_data/codeless_video/"+video+"/"+videoname[0]
     print(videopath)
 
 
-    outputpath = "/home/PSC2CODE/chengran/frame_data/invalid_frame_data/"+video
+    outputpath = "frame_data/invalid_frame_data/"+video
 
     # cmds = ["ffmpeg","-i", videopath,"-r","1", "-vframes", "1", "-q:v", "2",outputpath+"/%d.png"]
     cmds = ["ffmpeg","-i", videopath,"-f","image2", "-vf", "fps=fps=1", "-q:v", "2",outputpath+"/%d.png"]
@@ -33,12 +33,12 @@ def callsubprocess(video_path,video):
 
 
 def callsubprocess_for_psc2code(video_path,video):
-    os.mkdir("/home/PSC2CODE/chengran/test_for_psc2code")
+    os.mkdir("test_for_psc2code")
     videopath = video_path
     print(videopath)
 
 
-    outputpath = "/home/PSC2CODE/chengran/test_for_psc2code"
+    outputpath = "test_for_psc2code"
 
     # cmds = ["ffmpeg","-i", videopath,"-r","1", "-vframes", "1", "-q:v", "2",outputpath+"/%d.png"]
     cmds = ["ffmpeg","-i", videopath,"-f","image2", "-vf", "fps=fps=1", "-q:v", "2",outputpath+"/%d.png"]
@@ -49,16 +49,13 @@ def callsubprocess_for_psc2code(video_path,video):
     print("\n")
     subprocess.call(cmds)
  
-# 对图片进行统一化处理
 def get_thum(image, size=(64,64), greyscale=False):
-    # 利用image对图像大小重新设置, Image.ANTIALIAS为高质量的
     image = image.resize(size, Image.ANTIALIAS)
     if greyscale:
-        # 将图片转换为L模式，其为灰度图，其每个像素用8个bit表示
         image = image.convert('L')
     return image
  
-# 计算图片的余弦距离
+# calculate the distance for images
 def image_similarity_vectors_via_numpy(image1, image2):
     image1 = get_thum(image1)
     image2 = get_thum(image2)
@@ -70,12 +67,10 @@ def image_similarity_vectors_via_numpy(image1, image2):
         for pixel_tuple in image.getdata():
             vector.append(average(pixel_tuple))
         vectors.append(vector)
-        # linalg=linear（线性）+algebra（代数），norm则表示范数
-        # 求图片的范数？？
+
         norms.append(linalg.norm(vector, 2))
     a, b = vectors
     a_norm, b_norm = norms
-    # dot返回的是点积，对二维数组（矩阵）进行计算
     res = dot(a / a_norm, b / b_norm)
     return res
  
@@ -83,7 +78,6 @@ def getthesim(image1add,image2add):
     image1 = Image.open(image1add)
     image2 = Image.open(image2add)
     cosin = image_similarity_vectors_via_numpy(image1, image2)
-    # print('图片余弦相似度',cosin)
     return cosin
 
 def diff_frames(frame_folder, thre=0.05, metric="NRMSE"):
@@ -138,11 +132,11 @@ def callsubprocess_for_otherIDE(videoname,video_path,output_path):
     print(output_path)
     video = os.listdir(video_path)[0]
     
-    # videopath = "/home/PSC2CODE/chengran/video_data/codeless_video/"+video+"/"+videoname[0]
+    # videopath = "video_data/codeless_video/"+video+"/"+videoname[0]
     # print(videopath)
 
 
-    # outputpath = "/home/PSC2CODE/chengran/frame_data/invalid_frame_data/"+video
+    # outputpath = "frame_data/invalid_frame_data/"+video
 
     # # cmds = ["ffmpeg","-i", videopath,"-r","1", "-vframes", "1", "-q:v", "2",outputpath+"/%d.png"]
     cmds = ["ffmpeg","-i", os.path.join(video_path,video),"-f","image2", "-vf", "fps=fps=1", "-q:v", "2",output_path+"/%d.png"]
@@ -154,49 +148,22 @@ def callsubprocess_for_otherIDE(videoname,video_path,output_path):
     subprocess.call(cmds)
 
 if __name__ == "__main__":
-
-    # 切割图片
-    source_path = "/home/PSC2CODE/chengran/video_data/valid_video_otherIDE/"
-    output_path = "/home/PSC2CODE/chengran/data_copy/valid_otherIDE"
+    source_path = "video_data/valid_video_otherIDE/"
+    output_path = "data_copy/valid_otherIDE"
     whole_dir = os.listdir(source_path)
 
     for video_dir in whole_dir:
         print("the ide file is "+video_dir)
         for video in os.listdir(os.path.join(source_path,video_dir)):
             path = os.path.join(source_path,video_dir,video)
-            # print(path)
             video_name = path[-11:]
             if not os.path.exists(os.path.join(output_path,video_name)):
                 os.mkdir(os.path.join(output_path,video_name))
             callsubprocess_for_otherIDE(video_name,path,os.path.join(output_path,video_name))
-        #     path = "/home/PSC2CODE/chengran/video_data/codeless_video/"+video
-        #     if path != "/home/PSC2CODE/chengran/video_data/codeless_video/videolog.md":
-        #         # 切割
-        #         if not os.path.exists("/home/PSC2CODE/chengran/frame_data/invalid_frame_data/"+video):
-        #             os.mkdir("/home/PSC2CODE/chengran/frame_data/invalid_frame_data/"+video)
-        #             callsubprocess(path,video)
-        #         if not os.path.exists("/home/PSC2CODE/chengran/frame_data/invalid_frame_data/"+video+"/frames.txt"):
+
             diff_frames(os.path.join(output_path,video_name))
             
 
 
 
-    # for test
-    # callsubprocess_for_psc2code("/home/PSC2CODE/chengran/video_data/psc2code_video/Java operators.mp4","Java operators.mp4")
-    # diff_frames("/home/PSC2CODE/chengran/test_for_psc2code")
-
-
-    # # 计算相似度
-    # print("test")
-    # count = 0
-    # # image1 = "/home/PSC2CODE/chengran/frame_data/invalid_frame_data/0VX66NUoBRo/1.png"
-    # # image2 = "/home/PSC2CODE/chengran/frame_data/invalid_frame_data/0VX66NUoBRo/2.png"
-    # path = "/home/PSC2CODE/chengran/frame_data/invalid_frame_data/0VX66NUoBRo/"
-    # for frame in os.listdir(path):
-    #     image1 = "/home/PSC2CODE/chengran/frame_data/invalid_frame_data/0VX66NUoBRo/1.png"
-    #     image2 = "/home/PSC2CODE/chengran/frame_data/invalid_frame_data/0VX66NUoBRo/"+frame
-    #     cosin = getthesim(image1,image2)
-    #     if cosin <= 0.9:
-    #         count+=1
-    # print(count)
 

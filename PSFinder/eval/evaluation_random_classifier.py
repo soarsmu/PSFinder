@@ -17,7 +17,7 @@ import numpy
 #     output = {}
 #     rightlist = []
 #     faultlist = []
-#     database = "/home/PSC2CODE/chengran/data_copy/test"
+#     database = "data_copy/test"
 #     for category in os.listdir(database):
 #         # print(category) 
 #         if category == "non-screencast":

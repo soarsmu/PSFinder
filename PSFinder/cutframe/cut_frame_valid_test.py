@@ -9,7 +9,7 @@ from json import load
 from shutil import copyfile
 
 def read_video():
-    videopath = "/home/PSC2CODE/chengran/video_data/psc2code_video"
+    videopath = "video_data/psc2code_video"
     videodir = os.listdir(videopath)
     return videodir
 
@@ -28,7 +28,7 @@ def read_json(jsontxt):
         # if data.has_key("video"):
         if "video" in data.keys():
             data["video_name"]=data['video']
-        if os.path.exists("/home/PSC2CODE/chengran/video_data/psc2code_video/"+data["video_name"]+".mp4"):   
+        if os.path.exists("video_data/psc2code_video/"+data["video_name"]+".mp4"):   
             return data["labels"],data["video_name"]
         else:
             return 0,0
@@ -38,7 +38,7 @@ def read_json(jsontxt):
 # download and setting the ffmpeg version 4.1.6
 # note that ffmpeg is external programming, so we need use subprocess
 def callsubprocess(video_path,output_mid_path):
-    # video_path = "/home/PSC2CODE/chengran/video_for_test/Tutorial 14 - Creare un menù con lo switch (Java).mp4"
+    # video_path = "video_for_test/Tutorial 14 - Creare un menù con lo switch (Java).mp4"
     print(os.path.exists(video_path))
     outputpath = output_mid_path
     cmds = ["ffmpeg","-i", video_path, "-r", "1", "-f", "image2",outputpath+"%d.png", "-nostdin"]
@@ -61,9 +61,9 @@ def timestamp_to_time(timestamp):
     return str("%d:%d:%d"%(h_time,m_time,s_time))
 
 def callsubprocess_test():
-    video_path = "/home/PSC2CODE/chengran/video_data/psc2code_video/Java Video Tutorial 11.mp4"
+    video_path = "video_data/psc2code_video/Java Video Tutorial 11.mp4"
     print(os.path.exists(video_path))
-    outputpath = "/home/PSC2CODE/chengran/test"
+    outputpath = "test"
     cmds = ["ffmpeg","-i", video_path, "-r", "1", "-f", "image2",outputpath+"%d.png", "-nostdin"]
     # ffmpeg -ss 01:23:45 -i input -vframes 1 -q:v 2 output.jpg
     # cmds = ["ffmpeg","-ss","00:11:11", "-i", video_path, "-vframes", "1", "-q:v", "2",outputpath]
@@ -90,16 +90,16 @@ if __name__ == "__main__":
         if video_name!=0:
 
             print("vidoe name is "+str(video_name))
-            if os.path.exists("/home/PSC2CODE/chengran/experiment2_data/psc2code_data/"+video_name)==False:
-                os.mkdir("/home/PSC2CODE/chengran/experiment2_data/origin/"+video_name)
-                os.mkdir("/home/PSC2CODE/chengran/experiment2_data/psc2code_data/"+video_name)
-                os.mkdir("/home/PSC2CODE/chengran/experiment2_data/psc2code_data/"+video_name+"/1/")
-                os.mkdir("/home/PSC2CODE/chengran/experiment2_data/psc2code_data/"+video_name+"/2/")
-                os.mkdir("/home/PSC2CODE/chengran/experiment2_data/psc2code_data/"+video_name+"/3/")
-                os.mkdir("/home/PSC2CODE/chengran/experiment2_data/psc2code_data/"+video_name+"/4/")
+            if os.path.exists("experiment2_data/psc2code_data/"+video_name)==False:
+                os.mkdir("experiment2_data/origin/"+video_name)
+                os.mkdir("experiment2_data/psc2code_data/"+video_name)
+                os.mkdir("experiment2_data/psc2code_data/"+video_name+"/1/")
+                os.mkdir("experiment2_data/psc2code_data/"+video_name+"/2/")
+                os.mkdir("experiment2_data/psc2code_data/"+video_name+"/3/")
+                os.mkdir("experiment2_data/psc2code_data/"+video_name+"/4/")
         #     # delete those video_json that don't have download file    
-            videopath = "/home/PSC2CODE/chengran/video_data/psc2code_video/"+video_name+".mp4"
-            outputpath = "/home/PSC2CODE/chengran/experiment2_data/origin/"+video_name+"/"
+            videopath = "video_data/psc2code_video/"+video_name+".mp4"
+            outputpath = "experiment2_data/origin/"+video_name+"/"
 
 
 
@@ -121,13 +121,13 @@ if __name__ == "__main__":
                 else:
                     number =  img[0:-4]
                     if int(label[number]) == 1:
-                        copyfile(outputpath+img,"/home/PSC2CODE/chengran/experiment2_data/psc2code_data/"+video_name+"/1/"+img)
+                        copyfile(outputpath+img,"experiment2_data/psc2code_data/"+video_name+"/1/"+img)
                     if int(label[number]) == 2:
-                        copyfile(outputpath+img,"/home/PSC2CODE/chengran/experiment2_data/psc2code_data/"+video_name+"/2/"+img)
+                        copyfile(outputpath+img,"experiment2_data/psc2code_data/"+video_name+"/2/"+img)
                     if int(label[number]) == 3:
-                        copyfile(outputpath+img,"/home/PSC2CODE/chengran/experiment2_data/psc2code_data/"+video_name+"/3/"+img)
+                        copyfile(outputpath+img,"experiment2_data/psc2code_data/"+video_name+"/3/"+img)
                     if int(label[number]) == 4:
-                        copyfile(outputpath+img,"/home/PSC2CODE/chengran/experiment2_data/psc2code_data/"+video_name+"/4/"+img)
+                        copyfile(outputpath+img,"experiment2_data/psc2code_data/"+video_name+"/4/"+img)
 
                     # print(outputpath+img)
             #     # 复制到实验2中去
@@ -139,13 +139,13 @@ if __name__ == "__main__":
             #         print(label[number])
 
             #     if label[number] == 1:
-            #         copyfile(outputpath+img,"/home/PSC2CODE/chengran/experiment2_data/psc2code_data/"+video_name+"/1/"+img)
+            #         copyfile(outputpath+img,"experiment2_data/psc2code_data/"+video_name+"/1/"+img)
             #     if label[number] == 2:
-            #         copyfile(outputpath+img,"/home/PSC2CODE/chengran/experiment2_data/psc2code_data/"+video_name+"/2/"+img)
+            #         copyfile(outputpath+img,"experiment2_data/psc2code_data/"+video_name+"/2/"+img)
             #     if label[number] == 3:
-            #         copyfile(outputpath+img,"/home/PSC2CODE/chengran/experiment2_data/psc2code_data/"+video_name+"/3/"+img)
+            #         copyfile(outputpath+img,"experiment2_data/psc2code_data/"+video_name+"/3/"+img)
             #     if label[number] == 4:
-            #         copyfile(outputpath+img,"/home/PSC2CODE/chengran/experiment2_data/psc2code_data/"+video_name+"/4/"+img)
+            #         copyfile(outputpath+img,"experiment2_data/psc2code_data/"+video_name+"/4/"+img)
             #             # os.remove(outputpath+img)
             #     else:
             #         print("fault")

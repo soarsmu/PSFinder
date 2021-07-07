@@ -76,7 +76,7 @@ class myDataSet(Dataset):
 
 img_path = path/data
 def prediect(imgdir):
-    net = torch.load("/home/PSC2CODE/chengran/model/freeze_20earlystop.pth")
+    net = torch.load("model/freeze_20earlystop.pth")
     torch.no_grad()
 
     for item in os.listdir(imgdir):
@@ -145,13 +145,13 @@ def predict_gpu_experiment1():
     print(print_acc+"|"+precison+"|"+recall+"|"+f1+"|")
 
 def predict_gpu_experiment2(imgdir):
-    test_data = myDataSet("/home/PSC2CODE/chengran/experiment2_data/test",data_transform)
+    test_data = myDataSet("experiment2_data/test",data_transform)
     testloader = torch.utils.data.DataLoader(test_data, batch_size=16, shuffle=True, num_workers=0)
-    # net= torch.load("/home/PSC2CODE/chengran/experiment2.pth")
+    # net= torch.load("experiment2.pth")
     from torchvision_vgg import VGG,vgg16_bn1
     net = vgg16_bn1()
     net = nn.DataParallel(net)
-    net.load_state_dict(torch.load("/home//PSC2CODE/chengran/experiment2_1.pth"))
+    net.load_state_dict(torch.load("experiment2_1.pth"))
     net = net.cuda()
     with torch.no_grad(): 
         net.eval()

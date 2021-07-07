@@ -61,9 +61,9 @@ def callsubprocess(video_path):
     videopath = video_path
     videoname = video_path.split("/")[-1][:-4]
     
-    # outputpath = "/home/PSC2CODE/chengran/evaluation/sample/"
-    # outputpath = "/home/PSC2CODE/chengran/evaluation/sample_psc2code/"
-    outputpath = "/home/PSC2CODE/chengran/evaluation/sample_otheride/"
+    # outputpath = "evaluation/sample/"
+    # outputpath = "evaluation/sample_psc2code/"
+    outputpath = "evaluation/sample_otheride/"
 
     # cmds = ["ffmpeg","-i", videopath,"-r","1", "-vframes", "1", "-q:v", "2",outputpath+"/%d.png"]
     if not os.path.exists(outputpath+videoname):
@@ -123,13 +123,13 @@ data_transform  = transforms.Compose([
 
 #     class_names = ['invalid',"valid"]
 
-#     for data in os.listdir("/home/PSC2CODE/chengran/evaluation/sample"):
-#         video_path = os.path.join("/home/PSC2CODE/chengran/evaluation/sample",data)
-#     # net= torch.load("/home/PSC2CODE/chengran/experiment2.pth")
+#     for data in os.listdir("evaluation/sample"):
+#         video_path = os.path.join("evaluation/sample",data)
+#     # net= torch.load("experiment2.pth")
 #         from torchvision_vgg import VGG,vgg16_bn1
 #         net = vgg16_bn1()
 #         net = nn.DataParallel(net)
-#         net.load_state_dict(torch.load("/home//PSC2CODE/chengran/experiment2_1.pth"))
+#         net.load_state_dict(torch.load("experiment2_1.pth"))
 #         net = net.cuda()
 #         print(video_path)
 #         valid = []
@@ -213,14 +213,14 @@ def predict_sample_afterdelete():
 
     return_dic = {}
 
-    for data in os.listdir("/home/PSC2CODE/chengran/evaluation_data/sample"):
-        video_path = os.path.join("/home/PSC2CODE/chengran/evaluation_data/sample",data)
-    # net= torch.load("/home/PSC2CODE/chengran/experiment2.pth")
+    for data in os.listdir("evaluation_data/sample"):
+        video_path = os.path.join("evaluation_data/sample",data)
+    # net= torch.load("experiment2.pth")
         from torchvision_vgg import VGG,vgg16_bn1
         net = vgg16_bn1()
-        net.load_state_dict(torch.load("/home/PSC2CODE/chengran/experiment1_update.pth"))
+        net.load_state_dict(torch.load("experiment1_update.pth"))
         # net = nn.DataParallel(net)
-        # net.load_state_dict(torch.load("/home/PSC2CODE/chengran/experiment2_1.pth"))
+        # net.load_state_dict(torch.load("experiment2_1.pth"))
         net = net.cuda()
         print(video_path)
         valid = []
@@ -254,8 +254,8 @@ def predict_sample_afterdelete():
     print(invalidnumber)
             # with open("evaluation/log/videopredict.txt","a")as f:
                 # f.write(video_path+" "+str(predict_result)+"\n")
-            # if os.path.exists("/home/PSC2CODE/chengran/data_copy/test/non-screencast/"+data[-11:]):
-                # return_dic[video_path] = [len(os.listdir("/home/PSC2CODE/chengran/data_copy/test/non-screencast/"+data[-11:])),predict_result,0]
+            # if os.path.exists("data_copy/test/non-screencast/"+data[-11:]):
+                # return_dic[video_path] = [len(os.listdir("data_copy/test/non-screencast/"+data[-11:])),predict_result,0]
 
 
 def predict_psc2code_afterdelete():
@@ -267,13 +267,13 @@ def predict_psc2code_afterdelete():
     validnumber = 0
     invalidnumber = 0
 
-    for data in os.listdir("/home/PSC2CODE/chengran/evaluation_data/sample_psc2code"):
-        video_path = os.path.join("/home/PSC2CODE/chengran/evaluation_data/sample_psc2code",data)
-    # net= torch.load("/home/PSC2CODE/chengran/experiment2.pth")
+    for data in os.listdir("evaluation_data/sample_psc2code"):
+        video_path = os.path.join("evaluation_data/sample_psc2code",data)
+    # net= torch.load("experiment2.pth")
         from torchvision_vgg import VGG,vgg16_bn1
         net = vgg16_bn1()
-        net.load_state_dict(torch.load("/home//PSC2CODE/chengran/experiment1_update.pth"))
-        # net.load_state_dict(torch.load("/home/PSC2CODE/chengran/experiment2_1.pth"))
+        net.load_state_dict(torch.load("experiment1_update.pth"))
+        # net.load_state_dict(torch.load("experiment2_1.pth"))
 
         net = net.cuda()
         print(video_path)
@@ -308,7 +308,7 @@ def predict_psc2code_afterdelete():
     print(invalidnumber)
             # with open("evaluation/log/videopredict.txt","a")as f:
                 # f.write(video_path+" "+str(video_predict(valid,invalid))+"\n")
-            # return_dic[video_path] = [len(os.listdir("/home/PSC2CODE/chengran/data_copy/test/psc2code/"+data)),predict_result,0]
+            # return_dic[video_path] = [len(os.listdir("data_copy/test/psc2code/"+data)),predict_result,0]
     # return return_dic
 
 def predict_otheride_afterdelete():
@@ -316,12 +316,12 @@ def predict_otheride_afterdelete():
     class_names = ['invalid',"valid"]
     validnumber = 0
     invalidnumber = 0
-    for data in os.listdir("/home/PSC2CODE/chengran/evaluation_data/sample_otheride"):
-        video_path = os.path.join("/home/PSC2CODE/chengran/evaluation_data/sample_otheride",data)
-    # net= torch.load("/home/PSC2CODE/chengran/experiment2.pth")
+    for data in os.listdir("evaluation_data/sample_otheride"):
+        video_path = os.path.join("evaluation_data/sample_otheride",data)
+    # net= torch.load("experiment2.pth")
         from torchvision_vgg import VGG,vgg16_bn1
         net = vgg16_bn1()
-        net.load_state_dict(torch.load("/home/PSC2CODE/chengran/experiment1_update.pth"))
+        net.load_state_dict(torch.load("experiment1_update.pth"))
         net = net.cuda()
         print(video_path)
         valid = []
@@ -357,11 +357,11 @@ def predict_otheride_afterdelete():
     print(invalidnumber)
 
 
-# for videodir in os.listdir("/home/PSC2CODE/chengran/video_data/codeless_video"):
+# for videodir in os.listdir("video_data/codeless_video"):
 #     # print(videodir)
-#     if ".md" not in videodir and videodir in os.listdir("/home/PSC2CODE/chengran/data_copy/test/non-screencast"):
-#         video = os.listdir(os.path.join("/home/PSC2CODE/chengran/video_data/codeless_video",videodir))[0]
-#         videopath = os.path.join("/home/PSC2CODE/chengran/video_data/codeless_video",videodir,video)
+#     if ".md" not in videodir and videodir in os.listdir("data_copy/test/non-screencast"):
+#         video = os.listdir(os.path.join("video_data/codeless_video",videodir))[0]
+#         videopath = os.path.join("video_data/codeless_video",videodir,video)
 #         callsubprocess(videopath)
     
 
@@ -369,32 +369,13 @@ def predict_otheride_afterdelete():
 
 
 
-# for data in os.listdir("/home/PSC2CODE/chengran/evaluation_data/sample"):
-#     video_path = os.path.join("/home/PSC2CODE/chengran/evaluation_data/sample",data)
+# for data in os.listdir("evaluation_data/sample"):
+#     video_path = os.path.join("evaluation_data/sample",data)
 #     diff_frames(video_path, thre=0.05, metric="NRMSE")
 # 预测non-screencasts
+
+
 print(predict_sample_afterdelete())
 
 
-# 预测psc2code screencasts
-# for videodir in os.listdir("/home/PSC2CODE/chengran/video_data/psc2code_video"):
 
-#     print(videodir)
-#     if videodir[:-4] in os.listdir("/home/PSC2CODE/chengran/data_copy/test/psc2code"):
-#         videopath = os.path.join("/home/PSC2CODE/chengran/video_data/psc2code_video",videodir)
-#         callsubprocess(videopath)
-# predict_psc2code_afterdelete()
-
-# 预测other IDE screencasts
-# for ide in os.listdir("/home/PSC2CODE/chengran/video_data/valid_video_otherIDE"):
-#     for videodir in os.listdir(os.path.join("/home/PSC2CODE/chengran/video_data/valid_video_otherIDE",ide)):
-#         if videodir in os.listdir("/home/PSC2CODE/chengran/data_copy/test/otheride"):
-#             for video in  os.listdir(os.path.join("/home/PSC2CODE/chengran/video_data/valid_video_otherIDE",ide,videodir)):
-#                 videopath = os.path.join("/home/PSC2CODE/chengran/video_data/valid_video_otherIDE",ide,videodir,video)
-#                 callsubprocess(videopath)
-# modify conda to pyvideo
-# for data in os.listdir("/home/PSC2CODE/chengran/evaluation/sample_otheride"):
-#     video_path = os.path.join("/home/PSC2CODE/chengran/evaluation/sample_otheride",data)
-#     diff_frames(video_path, thre=0.05, metric="NRMSE")
-# modify conda to torch_test
-# predict_otheride_afterdelete()
