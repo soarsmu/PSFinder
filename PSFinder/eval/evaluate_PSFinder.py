@@ -306,7 +306,7 @@ def predict_psc2code_afterdelete():
             print(data)
     print(validnumber)
     print(invalidnumber)
-            # with open("evaluation/log/videopredict.txt","a")as f:
+            # with open("evaluation/log/visdeopredict.txt","a")as f:
                 # f.write(video_path+" "+str(video_predict(valid,invalid))+"\n")
             # return_dic[video_path] = [len(os.listdir("data_copy/test/psc2code/"+data)),predict_result,0]
     # return return_dic

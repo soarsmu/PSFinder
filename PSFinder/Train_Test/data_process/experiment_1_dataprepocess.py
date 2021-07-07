@@ -4,7 +4,7 @@ import math
 
 
 def get_valid_psc2code_data():
-    sourcepath = "/home/PSC2CODE/chengran/psc2code_data/"
+    sourcepath = "psc2code_data/"
     videodir = os.listdir(sourcepath)
     image_path = []
     for video in videodir:
@@ -16,7 +16,7 @@ def get_valid_psc2code_data():
     return image_path
 
 def get_invalid_psc2code_data():
-    sourcepath = "/home/PSC2CODE/chengran/psc2code_data/"
+    sourcepath = "psc2code_data/"
     videodir = os.listdir(sourcepath)
     image_path = []
     for video in videodir:
@@ -28,7 +28,7 @@ def get_invalid_psc2code_data():
     return image_path
 
 def get_valid_otherIDE_data():
-    sourcepath = "/home/PSC2CODE/chengran/data_copy/valid_otherIDE"
+    sourcepath = "data_copy/valid_otherIDE"
     videodir = os.listdir(sourcepath)
     image_path = []
     for video in videodir:
@@ -38,7 +38,7 @@ def get_valid_otherIDE_data():
     return image_path
 
 def getinvalid_data_small():
-    sourcepath = "/home/PSC2CODE/chengran/data_copy/invalid_frame_data"
+    sourcepath = "data_copy/invalid_frame_data"
     videodir = os.listdir(sourcepath)
     image_path = []
     for video in videodir:
@@ -48,7 +48,7 @@ def getinvalid_data_small():
     return image_path
 
 def getinvalid_data_big():
-    sourcepath = "/home/PSC2CODE/chengran/data_copy/invald_too_largefile"
+    sourcepath = "data_copy/invald_too_largefile"
     videodir = os.listdir(sourcepath)
     image_path = []
     for video in videodir:
@@ -68,7 +68,7 @@ def random_select(filedir,picknumber):
 
 # every video extract 1000 from big file
 def random_invalid_select():
-    sourcepath = "/home/PSC2CODE/chengran/data_copy/invald_too_largefile"
+    sourcepath = "data_copy/invald_too_largefile"
     videodir = os.listdir(sourcepath)
     image_path = []
     for video in videodir:
@@ -84,7 +84,7 @@ def random_invalid_select():
     return image_path
 
 def random_normal_select(sourcepath):
-    # sourcepath = "/home/PSC2CODE/chengran/data_copy/invald_too_largefile"
+    # sourcepath = "data_copy/invald_too_largefile"
     videodir = os.listdir(sourcepath)
     image_path = []
     for video in videodir:
@@ -101,7 +101,7 @@ def random_normal_select(sourcepath):
 
 
 def random_valid_select():
-    sourcepath = "/home/PSC2CODE/chengran/experiment1_data/label_otheride_experiment1"
+    sourcepath = "experiment1_data/label_otheride_experiment1"
     videodir = os.listdir(sourcepath)
     image_path = []
     for video in videodir:
@@ -125,7 +125,7 @@ def random_valid_select():
     return image_path
 
 def random_invalid_otheride_select():
-    sourcepath = "/home/PSC2CODE/chengran/experiment1_data/label_otheride_experiment1"
+    sourcepath = "experiment1_data/label_otheride_experiment1"
     videodir = os.listdir(sourcepath)
     image_path = []
     for video in videodir:
@@ -139,7 +139,7 @@ def random_invalid_otheride_select():
 
 def move_image(filedir,label,logfile):
     dic = {}
-    output_path = "/home/PSC2CODE/chengran/frame_data/pytorch_data/"
+    output_path = "frame_data/pytorch_data/"
     for img in filedir:
         if img.endswith(".png"):
             imgname = img.split("/")[-3]+label+img.split("/")[-2]+img.split("/")[-1]
@@ -147,12 +147,12 @@ def move_image(filedir,label,logfile):
             dic[img]=imgname
             shutil.copyfile(img,output_path+imgname)
     json_log = json.dumps(dic)
-    with open("/home/PSC2CODE/chengran/frame_data/log/"+logfile+".json","w") as f:
+    with open("frame_data/log/"+logfile+".json","w") as f:
         f.write(json_log)
 
 def move_image_test(filedir,label,logfile):
     dic = {}
-    output_path = "/home/PSC2CODE/chengran/frame_data/test/"
+    output_path = "frame_data/test/"
     for img in filedir:
         if img.endswith(".png"):
             imgname = label+img.split("/")[-2]+img.split("/")[-1]
@@ -160,11 +160,11 @@ def move_image_test(filedir,label,logfile):
             dic[img]=imgname
             shutil.copyfile(img,output_path+imgname)
     json_log = json.dumps(dic)
-    with open("/home/PSC2CODE/chengran/frame_data/log/"+logfile+"_test_.json","w") as f:
+    with open("frame_data/log/"+logfile+"_test_.json","w") as f:
         f.write(json_log)
 
 def divide_train():
-    sourcepath = "/home/PSC2CODE/chengran/frame_framelevel_data/pytorch_data/"
+    sourcepath = "frame_framelevel_data/pytorch_data/"
     filedir = os.listdir(sourcepath)
     # print(len(filedir))
     img_list = []
@@ -173,11 +173,11 @@ def divide_train():
         img_list.append(os.path.join(sourcepath,img))
     train = random.sample(img_list,math.ceil(len(filedir)*0.8))
 
-    file = open("/home/PSC2CODE/chengran/frame_framelevel_data/log/train.txt","w")
+    file = open("frame_framelevel_data/log/train.txt","w")
     file.write(str(train))
     file.close() 
     for img in train: 
-        outputpath = "/home/PSC2CODE/chengran/frame_framelevel_data/train/"
+        outputpath = "frame_framelevel_data/train/"
         # print(img.split("/")[-1])  
         shutil.copyfile(img,outputpath+img.split("/")[-1])
     # print(len(train))
@@ -185,11 +185,11 @@ def divide_train():
     # print(len(test))
     test = list(set(img_list)-set(train))
 
-    file = open("/home/PSC2CODE/chengran/frame_framelevel_data/log/test.txt","w")
+    file = open("frame_framelevel_data/log/test.txt","w")
     file.write(str(test))
     file.close()    
     for img in test: 
-        outputpath = "/home/PSC2CODE/chengran/frame_framelevel_data/test/"
+        outputpath = "frame_framelevel_data/test/"
         # print(img.split("/")[-1])  
         shutil.copyfile(img,outputpath+img.split("/")[-1])
     # print(len(train))
@@ -233,20 +233,20 @@ if __name__ == "__main__":
     #
 
     # img file from valid other ide
-    # random_valid_ide = random_normal_select("/home/PSC2CODE/chengran/data_copy/test/otheride")
+    # random_valid_ide = random_normal_select("data_copy/test/otheride")
     # print(len(random_valid_ide))
     # move_image_test(random_valid_ide,"valid",logfile = "valid_ide")
 
     # # img file from valid psc2code
-    # psc2code_data = random_normal_select("/home/PSC2CODE/chengran/data_copy/test/psc2code")
+    # psc2code_data = random_normal_select("data_copy/test/psc2code")
     # move_image_test(psc2code_data,"valid",logfile ="valid_psc2code")
 
     # # img file from invalid small
-    # invalid_small = random_normal_select("/home/PSC2CODE/chengran/data_copy/test/non-screencast")
+    # invalid_small = random_normal_select("data_copy/test/non-screencast")
     # move_image_test(invalid_small,"invalid",logfile = "invalid_samll")
 
     count = 0 
-    path = "/home/PSC2CODE/chengran/frame_data/pytorch_data"
+    path = "frame_data/pytorch_data"
     for img in os.listdir(path):
         if "invalid" in img:
             count+=1

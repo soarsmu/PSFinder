@@ -227,7 +227,7 @@ if __name__ == "__main__":
 
     train_data = myDataSet("frame_data/pytorch_data",data_transform)
     test_data = myDataSet("frame_data/test",data_transform)
-
+s
     # train_data = myDataSet("frame_framelevel_data/train",data_transform)
     # test_data = myDataSet("frame_framelevel_data/test",data_transform)
 
