@@ -30,6 +30,10 @@ from PIL import Image
 import os, random, shutil
 from collections.abc import Iterable
 from earlystop import EarlyStopping
+from transformers import ViTFeatureExtractor, ViTForImageClassification
+from PIL import Image
+import requests
+
 
 def callsubprocess(video_path,frame_path):
 
@@ -94,9 +98,9 @@ def prediect(imgdir):
 def predict_gpu_experiment1():
     test_data = myDataSet("/data/test",data_transform)
     testloader = torch.utils.data.DataLoader(test_data, batch_size=16, shuffle=True, num_workers=0)
-    from torchvision_vgg import VGG,vgg16_bn1
-    net = vgg16_bn1()
+    net = ViTForImageClassification.from_pretrained('google/vit-base-patch16-224')
     net.load_state_dict(torch.load("experiment1_update.pth"))
+    feature_extractor = ViTFeatureExtractor.from_pretrained('google/vit-base-patch16-224')
     net = net.cuda()
     with torch.no_grad(): 
         net.eval()
@@ -110,6 +114,7 @@ def predict_gpu_experiment1():
 
         for data in testloader:
             target, labels = data
+            target = feature_extractor(target)
             target, labels = target.cuda(), labels.cuda()
             # forward pass: compute predicted outputs by passing inputs to the model
             output = net(target)
@@ -144,7 +149,7 @@ def predict_gpu_experiment1():
 
     print(print_acc+"|"+precison+"|"+recall+"|"+f1+"|")
 
-def predict_gpu_experiment2(imgdir):
+# def predict_gpu_vgg(imgdir):
     test_data = myDataSet("experiment2_data/test",data_transform)
     testloader = torch.utils.data.DataLoader(test_data, batch_size=16, shuffle=True, num_workers=0)
     # net= torch.load("experiment2.pth")

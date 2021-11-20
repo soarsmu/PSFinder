@@ -19,8 +19,11 @@ import os, random, shutil
 from model_vgg import VGGNet
 from collections.abc import Iterable
 from earlystop import EarlyStopping
+from transformers import ViTFeatureExtractor, ViTForImageClassification
+from PIL import Image
+import requests
 
-plt.ion()  
+
 
 def GPU_usage_and_test():
     use_gpu = torch.cuda.is_available()
@@ -29,19 +32,13 @@ def GPU_usage_and_test():
     else:
         print("wrong")
 
-# data_dir = '../input/kermany2018/oct2017/OCT2017 '
-# TRAIN = 'train'
-# VAL = 'val'
-# TEST = 'test'
 
-
-# 制作训练集和测试集
 def moveFile(fileDir,tarDir):
-        pathDir = os.listdir(fileDir)    #取图片的原始路径
+        pathDir = os.listdir(fileDir)    
         filenumber=len(pathDir)
-        rate=0.1    #自定义抽取图片的比例，比方说100张抽10张，那就是0.1
-        picknumber=int(filenumber*rate) #按照rate比例从文件夹中取一定数量图片
-        sample = random.sample(pathDir, picknumber)  #随机选取picknumber数量的样本图片
+        rate=0.1    
+        picknumber=int(filenumber*rate) 
+        sample = random.sample(pathDir, picknumber)  
         print (sample)
         for name in sample:
                 shutil.move(fileDir+name, tarDir+name)
@@ -114,9 +111,8 @@ def freeze_by_names(model, layer_names):
 def unfreeze_by_names(model, layer_names):
     set_freeze_by_names(model, layer_names, False)
 
-def train_model1(net,criterion, optimizer,num_epochs):
+def train_model1(net,feature_extractor,criterion, optimizer,num_epochs):
 
-    # 使用验证集的loss来确认模型训练的效果
     avg_valid_losses = [] 
     avg_train_losses = []
     valid_losses = []
@@ -132,6 +128,7 @@ def train_model1(net,criterion, optimizer,num_epochs):
         for i, data in enumerate(trainloader, 0):
             length = len(trainloader)
             inputs, labels = data
+            inputs = feature_extractor(inputs)
             inputs, labels = inputs.cuda(), labels.cuda()
             optimizer.zero_grad()
 
@@ -141,17 +138,7 @@ def train_model1(net,criterion, optimizer,num_epochs):
             loss.backward()
             optimizer.step()
 
-            # 每个batch 打印一次loss和准确率
-            train_losses.append(loss.item())
-        #     sum_loss += loss.item()
-        # # 使用Top5分类
-        #     maxk = max((1,2))
-        #     label_resize = labels.view(-1, 1)
-        #     _, predicted = outputs.topk(maxk, 1, True, True)
-        #     total += labels.size(0)
-        #     correct += torch.eq(predicted, label_resize).cpu().sum().float().item()
-        #     print('[epoch:%d, iter:%d] Loss: %.03f ' % (epoch + 1, (i + 1 + epoch * length), sum_loss / (i + 1)))
-        # print("total is"+str(total))
+
 
         # validate the data
         with torch.no_grad(): 
@@ -160,6 +147,7 @@ def train_model1(net,criterion, optimizer,num_epochs):
             total = torch.zeros(1).squeeze().cuda()
             for data in testloader:
                 target, labels = data
+                target = feature_extractor(target)
                 target, labels = target.cuda(), labels.cuda()
                 # forward pass: compute predicted outputs by passing inputs to the model
                 output = net(target)
@@ -239,50 +227,27 @@ s
     print(len(testloader.dataset))
 
 
-    #model
-    # vgg16 = models.vgg16_bn()
-    # vgg16.load_state_dict(torch.load('vgg16_bn-6c64b313.pth'))
-    # # vgg16 = models.vgg16(pretrained=True)
-    # # vgg16.load_state_dict(torch.load("../input/vgg16bn/vgg16_bn.pth"))
-    # print(vgg16.classifier[6].out_features) # 1000 ss
+    # you can also try to use vgg or resnet models 
+    # from torchvision_vgg import VGG,vgg16_bn1
+    # vgg16 = vgg16_bn1()
     # # Freeze training for all layers
-    # for param in vgg16.features.parameters():
-    #     param.require_grad = False
-    # num_features = vgg16.classifier[6].in_features
-    # features = list(vgg16.classifier.children())[:-1] # Remove last layer
-    # features.extend([nn.Linear(num_features, 2)]) # Add our layer with 4 outputs
-    # vgg16.classifier = nn.Sequential(*features) # Replace the model classifier
-    # print(vgg16)
-    # vgg16.cuda()
-    # net = vgg16().to(device)
-
-    #
-    #
-    #
-    from torchvision_vgg import VGG,vgg16_bn1
-    vgg16 = vgg16_bn1()
-    # Freeze training for all layers
-    for name, param in vgg16.features.named_parameters():
-        param.require_grad = False
-        # print(name)
-
-        print(param.require_grad)
-        # exit(0)
-    
-    # vgg16 = nn.DataParallel(vgg16)
-    vgg16 = vgg16.cuda()
+    # for name, param in vgg16.features.named_parameters():
+    #     param.require_grad = False  
+    # # vgg16 = nn.DataParallel(vgg16)
+    # vgg16 = vgg16.cuda()
 
 
-    # print(VGGNet())
-    # net = VGGNet().to(device)
-    
+    feature_extractor = ViTFeatureExtractor.from_pretrained('google/vit-base-patch16-224')
+    model = ViTForImageClassification.from_pretrained('google/vit-base-patch16-224')
+
+
     # optimizer for psc2code is rmsprop 
-    optimizer = optim.Adam(filter(lambda p: p.requires_grad, vgg16.parameters()),lr=0.0001)
+    optimizer = optim.Adam()
     criterion = nn.CrossEntropyLoss()
     criterion.cuda()
     y_predict = []
     y_true = []
 
-    vgg16,avg_train_losses,avg_valid_losses = train_model1(vgg16, criterion, optimizer, num_epochs=100)
-    torch.save(vgg16.state_dict(), "experiment1_update.pth")
+    model,avg_train_losses,avg_valid_losses = train_model1(model, feature_extractor, criterion, optimizer, num_epochs=100)
+    torch.save(model.state_dict(), "experiment1_update.pth")
     

@@ -36,7 +36,7 @@ from collections.abc import Iterable
 from earlystop import EarlyStopping
 
 
-def video_predict(list1,list2):
+def video_predict(list1,list2,duplicate):
 
     overall = list1 + list2
     overall_new = [int(x) for x in overall]
@@ -49,12 +49,13 @@ def video_predict(list1,list2):
         for j in range(len(list1)-2):
             # print("%d %d %d"%(overall_new[i],overall_new[i+1],overall_new[i+2]))
             # print("%d %d %d"%(list1[j],list1[j+1],list1[j+2]))
-            if overall_new[i]==list1[j] and overall_new[i+1]==list1[j+1] and overall_new[i+2]==list1[j+2]:
-                label = 1
-                # print(list1[j])
-                # print(list1[j+1])
-                # print(list1[j+2])
-                return label
+            if list1/(list1+list2)>=0.5:
+                if overall_new[i]==list1[j] and overall_new[i+1]==list1[j+1] and overall_new[i+2]==list1[j+2] and overall_new[i+3]==list1[j+3]:
+                    label = 1
+                    # print(list1[j])
+                    # print(list1[j+1])
+                    # print(list1[j+2])
+                    return label
     return label
 def callsubprocess(video_path):
 
@@ -215,9 +216,11 @@ def predict_sample_afterdelete():
 
     for data in os.listdir("evaluation_data/sample"):
         video_path = os.path.join("evaluation_data/sample",data)
+        from transformers import ViTFeatureExtractor, ViTForImageClassification
     # net= torch.load("experiment2.pth")
-        from torchvision_vgg import VGG,vgg16_bn1
-        net = vgg16_bn1()
+        feature_extractor = ViTFeatureExtractor.from_pretrained('google/vit-base-patch16-224')
+        net = ViTForImageClassification.from_pretrained('google/vit-base-patch16-224')
+
         net.load_state_dict(torch.load("experiment1_update.pth"))
         # net = nn.DataParallel(net)
         # net.load_state_dict(torch.load("experiment2_1.pth"))
@@ -225,6 +228,7 @@ def predict_sample_afterdelete():
         print(video_path)
         valid = []
         invalid = []
+        duplicate = []
         with torch.no_grad():
             net.eval()
             for imgs in os.listdir(video_path):
@@ -242,21 +246,22 @@ def predict_sample_afterdelete():
                     # print('predicted:', result,number)
                     if result == "valid":
                         valid.append(int(number))
-                    else:
+                    if result =='invalid':
                         invalid.append(int(number))
+                    else:
+                        duplicate.append(int(number))
             print(sorted(valid))
             print(sorted(invalid))
             validnumber += len(valid)
             invalidnumber += len(invalid)
-            predict_result = video_predict(valid,invalid)
+            predict_result = video_predict(valid,invalid,duplicate)
             print(data)
-    print(validnumber)
-    print(invalidnumber)
-            # with open("evaluation/log/videopredict.txt","a")as f:
-                # f.write(video_path+" "+str(predict_result)+"\n")
+            # print(validnumber)
+            # print(invalidnumber)
+            with open("evaluation/log/videopredict.txt","a")as f:
+                f.write(video_path+" "+str(predict_result)+"\n")
             # if os.path.exists("data_copy/test/non-screencast/"+data[-11:]):
                 # return_dic[video_path] = [len(os.listdir("data_copy/test/non-screencast/"+data[-11:])),predict_result,0]
-
 
 def predict_psc2code_afterdelete():
 
