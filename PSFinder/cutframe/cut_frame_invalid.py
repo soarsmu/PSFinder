@@ -82,7 +82,7 @@ def getthesim(image1add,image2add):
 
 def diff_frames(frame_folder, thre=0.05, metric="NRMSE"):
     '''
-    The duplicated frames would be deleted and the file 'frames.txt' contains the name of the filtered frames
+    The duplicated frames would be deleted and the file 'frames.txt' contains the name of the filtered frames and the name of the duplicate frames
     @param frame_folder: the location of video frames 
     @param thre: threhold of dissimilarity
     @param metris: NRMSE or SSIM
@@ -101,6 +101,7 @@ def diff_frames(frame_folder, thre=0.05, metric="NRMSE"):
 
 
     filter_frames = []
+    duplicated_frame = []
     pre_img = None
     for frame in frame_seq:
         img = cv2.imread("%s/%d.png" % (frame_folder, frame))
@@ -116,13 +117,16 @@ def diff_frames(frame_folder, thre=0.05, metric="NRMSE"):
                 pre_img = img_gray
                 filter_frames.append(frame)
             else:
-                os.remove("%s/%d.png" % (frame_folder, frame))
+                duplicated_frame.append(frame)
         else:
             pre_img = img_gray
             filter_frames.append(frame)
     
-    print("filtered frame number")
+    print("Finished")
     fout.write(" ".join([str(f) for f in filter_frames]))
+    fout.write("\n")
+    fout.write(" ".join([str(f) for f in duplicated_frame]))
+
     fout.close()
 
 def callsubprocess_for_otherIDE(videoname,video_path,output_path):

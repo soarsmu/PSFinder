@@ -1,13 +1,9 @@
 # PSFinder
 - [PSFinder](#psfinder)
 
-Replication Package for the paper "Efficient Search of Live-Coding Screencasts from Online Videos".
+Replication Package for PSFinder, an automatic tool to identify live-coding screencasts.
 
-PSFinder aims to identify if a video is a live-coding screencasts. Programming videos on the Internet are valuable resources for learning programming skills. To find relevant videos, developers typically search online video platforms (e.g., YouTube) with keywords on topics they wish to learn. Developers often look for live-coding screencasts, in which the videos' authors perform live coding. 
-Yet, not all programming videos are live-coding screencasts. In this work, we develop a tool PSFinder to identify live-coding screencasts. \toolname{} leverages a classifier to identify whether a video frame contains an IDE window. It uses a sampling strategy to pick a number of frames from an input video, runs the classifer on these frames, and then determines whether the video is a live-coding screencast based on frames classified as containing IDE window. In our preliminary experiment, PSFinder can effectively identify live-coding screencasts as it achieves an F1-score of 0.97.
-
-***
-# download videos
+# Download Videos
 Our tool could download videos from YouTube based on [PyTube](https://pytube.io/en/latest/).
 Related functions are in /download/download_invalid_java.py:
 + input the specific url for YouTube videos
@@ -21,23 +17,30 @@ Related functions are in /download/download_invalid_java.py:
   conda env create -f environment.yml
   ```
 ## Pipeline
-User can run the whole pipeline on run.py.
+Before running the pipeline, you may want to check the sub-folder
 
-For running in stages, firstly 
-+ run /cutframe/cut_frame_invalid.py
+```/download```
+
+for automatically downloading videos from YouTube. 
+
+If you prefer to use YouTube official API to search and download videos, please kindly check the official [API documentation](https://developers.google.com/youtube/v3) further to sign in and employ the service.
+
+To run our pipeline in stages,  
++ For *frame sampler*, which extract each sampled frame and mark the duplicate frames:
   
-  to extracting every frame per minute and delete the most similar frames.
-+ run our model to get results
-
-  the model could be downloaded [here](https://drive.google.com/file/d/1De6yEzqOdMFn3htw3FZS96-6hvTxbZ1d/view?usp=sharing). You can run this script
-
-  /eval/evaluate_PSFinder.py
+  ```/cutframe/cut_frame_invalid.py```
   
-  The input should be the output file path in above step, the output is the classification results. 
-# Train
-The train script is in the file: 
++ For *video classifier*, which identify whether a video is live-coding screencast: 
 
-/Train_Test 
+  To fine-tune the pre-trained model, the script is in the sub-folder:
 
-The modeil defination is in /Train_Test/torchvision_vgg.py
+  ```/Train_Test```
+
+  one will also find the source code we employ to implement data preprocess.
+
+  The script for *video-level classification strategy* part is in:
+
+  ```/eval/evaluate_PSFinder.py```
+  
+  The input images should be the same as the file path of above model output. 
 
