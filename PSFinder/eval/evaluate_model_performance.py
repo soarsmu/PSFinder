@@ -150,58 +150,56 @@ def predict_gpu_experiment1():
     print(print_acc+"|"+precison+"|"+recall+"|"+f1+"|")
 
 # def predict_gpu_vgg(imgdir):
-    test_data = myDataSet("experiment2_data/test",data_transform)
-    testloader = torch.utils.data.DataLoader(test_data, batch_size=16, shuffle=True, num_workers=0)
-    # net= torch.load("experiment2.pth")
-    from torchvision_vgg import VGG,vgg16_bn1
-    net = vgg16_bn1()
-    net = nn.DataParallel(net)
-    net.load_state_dict(torch.load("experiment2_1.pth"))
-    net = net.cuda()
-    with torch.no_grad(): 
-        net.eval()
-        correct = torch.zeros(1).squeeze().cuda()
-        TOTAL = torch.zeros(1).squeeze().cuda()
-        TP = torch.zeros(1).squeeze().cuda()
-        TN = torch.zeros(1).squeeze().cuda()
-        FN = torch.zeros(1).squeeze().cuda()
-        FP = torch.zeros(1).squeeze().cuda()
+    # test_data = myDataSet("experiment2_data/test",data_transform)
+    # testloader = torch.utils.data.DataLoader(test_data, batch_size=16, shuffle=True, num_workers=0)
+    # # net= torch.load("experiment2.pth")
+    # from torchvision_vgg import VGG,vgg16_bn1
+    # net = vgg16_bn1()
+    # net = nn.DataParallel(net)
+    # net.load_state_dict(torch.load("experiment2_1.pth"))
+    # net = net.cuda()
+    # with torch.no_grad(): 
+    #     net.eval()
+    #     correct = torch.zeros(1).squeeze().cuda()
+    #     TOTAL = torch.zeros(1).squeeze().cuda()
+    #     TP = torch.zeros(1).squeeze().cuda()
+    #     TN = torch.zeros(1).squeeze().cuda()
+    #     FN = torch.zeros(1).squeeze().cuda()
+    #     FP = torch.zeros(1).squeeze().cuda()
 
-        for data in testloader:
-            target, labels = data
-            target, labels = target.cuda(), labels.cuda()
-            # forward pass: compute predicted outputs by passing inputs to the model
-            output = net(target)
-            # calculate the loss
-            # record validation loss
+    #     for data in testloader:
+    #         target, labels = data
+    #         target, labels = target.cuda(), labels.cuda()
+    #         # forward pass: compute predicted outputs by passing inputs to the model
+    #         output = net(target)
+    #         # calculate the loss
+    #         # record validation loss
 
-            prediction = torch.argmax(output, 1)
-            # correct += (prediction == labels).sum().float()
-            TP+=((prediction == 1) & (labels == 1)).sum()
-            TN+=((prediction == 0) & (labels == 0)).sum()
-            FN+=((prediction == 0) & (labels == 1)).sum()
-            FP+=((prediction == 1) & (labels == 0)).sum()
-
-
-            TOTAL += len(labels)
+    #         prediction = torch.argmax(output, 1)
+    #         # correct += (prediction == labels).sum().float()
+    #         TP+=((prediction == 1) & (labels == 1)).sum()
+    #         TN+=((prediction == 0) & (labels == 0)).sum()
+    #         FN+=((prediction == 0) & (labels == 1)).sum()
+    #         FP+=((prediction == 1) & (labels == 0)).sum()
 
 
-        # int(correct.item())
-        total = int(TOTAL.item())
-        tp = int(TP.item())
-        tn = int(TN.item())
-        fn = int(FN.item())
-        fp = int(FP.item())
+    #         TOTAL += len(labels)
+
+
+    #     # int(correct.item())
+    #     total = int(TOTAL.item())
+    #     tp = int(TP.item())
+    #     tn = int(TN.item())
+    #     fn = int(FN.item())
+    #     fp = int(FP.item())
         
         
-        print_acc = ("test_ACC: %.4f "%((tp+tn)/total))
-        precison = ("test_precision: %.4f "%(tp/(tp+fp)))
-        recall = ("test_rercall: %.4f "%(tp/(tp+fn)))
-        f1 = ("test_f1: %.4f "%(2*(tp/(tp+fp))*(tp/(tp+fn))/((tp/(tp+fp))+(tp/(tp+fn)))))
+    #     print_acc = ("test_ACC: %.4f "%((tp+tn)/total))
+    #     precison = ("test_precision: %.4f "%(tp/(tp+fp)))
+    #     recall = ("test_rercall: %.4f "%(tp/(tp+fn)))
+    #     f1 = ("test_f1: %.4f "%(2*(tp/(tp+fp))*(tp/(tp+fn))/((tp/(tp+fp))+(tp/(tp+fn)))))
 
-    print(print_acc+"|"+precison+"|"+recall+"|"+f1+"|")
+    # print(print_acc+"|"+precison+"|"+recall+"|"+f1+"|")
      
-# predict_gpu_experiment2(img_path)
-predict_gpu_experiment1()
-# prediect(img_path)
+
 

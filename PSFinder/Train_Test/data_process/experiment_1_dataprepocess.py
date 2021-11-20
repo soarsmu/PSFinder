@@ -57,7 +57,7 @@ def getinvalid_data_big():
             image_path.append(os.path.join(sourcepath,video,img))
     return image_path
 
-# 随机抽取
+# 
 def random_select(filedir,picknumber):
     filenumber = len(filedir)
     # picknumber = 1000
@@ -245,9 +245,9 @@ if __name__ == "__main__":
     # invalid_small = random_normal_select("data_copy/test/non-screencast")
     # move_image_test(invalid_small,"invalid",logfile = "invalid_samll")
 
-    count = 0 
-    path = "frame_data/pytorch_data"
-    for img in os.listdir(path):
-        if "invalid" in img:
-            count+=1
-    print(count)
+    # count = 0 
+    # path = "frame_data/pytorch_data"
+    # for img in os.listdir(path):
+    #     if "invalid" in img:
+    #         count+=1
+    # print(count)
