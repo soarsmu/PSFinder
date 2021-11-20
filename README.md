@@ -14,9 +14,9 @@ Related functions are in /download/download_invalid_java.py:
 + Anaconda
 + Pytorch
 + Creat Anaconda environment with dependent libraries (environment.yml):
-  ```
-  conda env create -f environment.yml
-  ```
+  
+  ```conda env create -f environment.yml```
+
 ## Pipeline
 Before running the pipeline, you may want to check the sub-folder
 
